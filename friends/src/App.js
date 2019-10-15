@@ -1,24 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Route, Switch, Link, NavLink } from 'react-router-dom';
 import './App.css';
+import Login from './components/Login';
+import FriendList from './components/FriendList';
+import PrivateRoute from './components/PrivateRoute';
+import FriendForm from './components/FriendForm';
 
 function App() {
+  const logout =() => {
+    localStorage.removeItem('token');
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Link to='/friends'><h1>Friends</h1></Link>
+      <nav>
+      <NavLink to="/login">Login</NavLink>
+      <NavLink to="/login" onClick={logout}>Logout</NavLink>
+      </nav>
+
+      <Switch>
+        <PrivateRoute exact path='/friends' component={FriendList} />
+        <PrivateRoute path='/friends/add' component={FriendForm} />
+        <Route path='/login' component={Login} />
+        <Route component={Login} />
+      </Switch>
     </div>
   );
 }
